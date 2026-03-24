@@ -1,9 +1,10 @@
 name: Release
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Test"]
+    types: [completed]
+    branches: [main]
 
 concurrency:
   group: release
@@ -14,12 +15,9 @@ permissions:
   id-token: write
 
 jobs:
-  test:
-    uses: ./.github/workflows/test.yml
-
   release:
-    needs: test
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     environment: pypi
 
     steps:
