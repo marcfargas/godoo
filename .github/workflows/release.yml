@@ -31,6 +31,16 @@ jobs:
 
       - run: uv sync
 
+      - name: Replace yanked v1.0.0 tag with v0.1.0
+        run: |
+          if git ls-remote --tags origin refs/tags/v1.0.0 | grep -q .; then
+            git fetch origin refs/tags/v1.0.0:refs/tags/v1.0.0
+            TAGGED_COMMIT=$(git rev-parse v1.0.0^{commit})
+            git push origin :refs/tags/v1.0.0
+            git tag v0.1.0 "$TAGGED_COMMIT"
+            git push origin v0.1.0
+          fi
+
       - name: Semantic Release
         id: release
         env:
