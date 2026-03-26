@@ -58,6 +58,7 @@ version_toml = [
     "packages/godoo-testcontainers/pyproject.toml:project.version",
     "packages/godoo-introspection/pyproject.toml:project.version",
 ]
+allow_zero_version = true
 major_on_zero = false
 branch = "main"
 commit_parser = "conventional"
